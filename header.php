@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="so">
 <head>
@@ -56,7 +55,6 @@ if (session_status() === PHP_SESSION_NONE) {
             color: #3498db;
         }
 
-       
         .admin-link {
             background: #f1c40f;
             color: #2c3e50 !important;
@@ -65,11 +63,6 @@ if (session_status() === PHP_SESSION_NONE) {
             font-weight: 700 !important;
         }
 
-        .admin-link:hover {
-            background: #f39c12 !important;
-        }
-
-      
         .logout-btn {
             color: #e74c3c !important;
             border: 1px solid #e74c3c;
@@ -82,13 +75,6 @@ if (session_status() === PHP_SESSION_NONE) {
             color: white !important;
         }
 
-        .user-name {
-            color: #bdc3c7;
-            font-size: 13px;
-            margin-right: 5px;
-        }
-
-       
         .header-search {
             display: flex;
             background: rgba(255,255,255,0.1);
@@ -103,8 +89,6 @@ if (session_status() === PHP_SESSION_NONE) {
             padding: 5px;
             outline: none;
         }
-
-        .header-search input::placeholder { color: #bdc3c7; }
     </style>
 </head>
 <body>
@@ -125,19 +109,16 @@ if (session_status() === PHP_SESSION_NONE) {
             <li><a href="contact.php">Contact Us</a></li>
 
             <?php if(isset($_SESSION['user_id'])): ?>
-                
                 <?php if($_SESSION['role'] == 'admin'): ?>
                     <li><a href="admin_dashboard.php" class="admin-link">Dashboard</a></li>
                 <?php endif; ?>
-
                 <li>
-                    <span class="user-name"><?php echo $_SESSION['username']; ?></span>
+                    <span style="color: #bdc3c7; font-size: 13px; margin-right: 10px;"><?php echo $_SESSION['username']; ?></span>
                     <a href="logout.php" class="logout-btn">Logout</a>
                 </li>
-
             <?php else: ?>
                 <li><a href="login.php">Login</a></li>
-                <li><a href="register.php" style="background: #3498db; padding: 8px 15px; border-radius: 5px;">Sign Up</a></li>
+                <li><a href="register.php" style="background: #3498db; padding: 8px 15px; border-radius: 5px; color: white; text-decoration: none;">Sign Up</a></li>
             <?php endif; ?>
         </ul>
     </div>
