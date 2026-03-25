@@ -1,13 +1,10 @@
 <?php include 'db_connect.php'; include 'header.php'; ?>
 <?php
-session_start();
 // Haddii uusan qofku soo gelin ama uusan ahayn Admin/Seller, dib u celi
 if(!isset($_SESSION['user_id']) || ($_SESSION['role'] != 'admin' && $_SESSION['role'] != 'seller')){
     header("Location: login.php");
     exit();
 }
-include 'db_connect.php';
-include 'header.php';
 ?>
 <div style="max-width: 600px; margin: 30px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
     <h2 style="text-align: center;">Geli Hanti Cusub (Real Entry)</h2>

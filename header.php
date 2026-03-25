@@ -1,8 +1,8 @@
 <?php
-// Hubi in session-ku furanyahay si aan xogta qofka u helno
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+?>
 ?>
 <!DOCTYPE html>
 <html lang="so">
