@@ -1,16 +1,25 @@
 <?php
-session_start();
+// 1. Amniga Session-ka: Hubi inaan session horay u furnayn
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// 2. Error Reporting: Si aad u aragto haddii uu qalad jiro (meesha bogga caddaanka ah)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include 'db_connect.php';
 
-// 1. Hubi in qofka soo galay uu yahay Admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
+// 3. Hubi in qofka soo galay uu yahay Admin
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    // Haddii uusan qofku Admin ahayn, dib ugu celi login
     header("Location: login.php");
     exit();
 }
 
 include 'header.php';
 
-// 2. Tirakoobka guud (Stats)
+// 4. Tirakoobka guud (Stats)
 $total_properties = $conn->query("SELECT COUNT(*) as total FROM properties")->fetch_assoc()['total'];
 $total_users = $conn->query("SELECT COUNT(*) as total FROM users")->fetch_assoc()['total'];
 $pending_approvals = $conn->query("SELECT COUNT(*) as total FROM properties WHERE status = 'pending'")->fetch_assoc()['total'];
@@ -32,7 +41,7 @@ $pending_approvals = $conn->query("SELECT COUNT(*) as total FROM properties WHER
     .status-pending { background: #fff3cd; color: #856404; }
     .status-approved { background: #d4edda; color: #155724; }
     
-    .btn { padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 13px; font-weight: 500; transition: 0.3s; }
+    .btn { padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: 600; transition: 0.3s; display: inline-block; }
     .btn-approve { background: #27ae60; color: white; margin-right: 5px; }
     .btn-approve:hover { background: #219150; }
     .btn-delete { background: #e74c3c; color: white; }
@@ -40,4 +49,73 @@ $pending_approvals = $conn->query("SELECT COUNT(*) as total FROM properties WHER
 </style>
 
 <div class="admin-container">
-    <div
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1>Admin Dashboard</h1>
+        <p>Ku soo dhawaaw, <strong><?php echo $_SESSION['username']; ?></strong></p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <p>Dhammaan Hantida</p>
+            <h3><?php echo $total_properties; ?></h3>
+        </div>
+        <div class="stat-card">
+            <p>Isticmaaleyaasha</p>
+            <h3><?php echo $total_users; ?></h3>
+        </div>
+        <div class="stat-card" style="border-bottom-color: #f1c40f;">
+            <p>Sugaya Approval</p>
+            <h3><?php echo $pending_approvals; ?></h3>
+        </div>
+    </div>
+
+    <div class="admin-table-container">
+        <h2 style="margin-bottom: 20px;">Maamulka Hantida</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Sawirka</th>
+                    <th>Magaca</th>
+                    <th>Nooca</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $res = $conn->query("SELECT * FROM properties ORDER BY id DESC");
+                if($res && $res->num_rows > 0) {
+                    while($row = $res->fetch_assoc()) {
+                        $status_class = ($row['status'] == 'approved') ? 'status-approved' : 'status-pending';
+                        echo "<tr>";
+                        echo "<td>#".$row['id']."</td>";
+                        
+                        // Hubi sawirka
+                        $img = !empty($row['image_path']) ? $row['image_path'] : 'https://via.placeholder.com/60';
+                        echo "<td><img src='$img' width='60' height='45' style='object-fit:cover; border-radius:4px;'></td>";
+                        
+                        echo "<td>".$row['title']."</td>";
+                        echo "<td>".$row['category']."</td>";
+                        echo "<td><span class='status-badge $status_class'>".ucfirst($row['status'])."</span></td>";
+                        echo "<td>";
+                        
+                        // Badhanka Approve oo kaliya soo baxaya haddii gurigu pending yahay
+                        if ($row['status'] == 'pending') {
+                            echo "<a href='approve_property.php?id=".$row['id']."' class='btn btn-approve'>Approve</a>";
+                        }
+                        
+                        echo "<a href='delete_property.php?id=".$row['id']."' class='btn btn-delete' onclick='return confirm(\"Ma hubtaa inaad tirtirto?\")'>Delete</a>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6' style='text-align:center; padding: 20px;'>Wax hanti ah laguma hayo database-ka.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<?php include 'footer.php'; ?>

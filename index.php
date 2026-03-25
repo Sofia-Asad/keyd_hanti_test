@@ -1,5 +1,8 @@
-<?php include 'db_connect.php'; ?>
-<?php include 'header.php'; ?>
+<?php 
+session_start();
+include 'db_connect.php'; 
+include 'header.php'; 
+?>
 
 <style>
     /* Qaybta Hero-ga (Korka) */
@@ -14,9 +17,15 @@
     }
 
     .hero-section h1 {
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-        font-weight: 600;
+        font-size: 2.8rem;
+        margin-bottom: 15px;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-section p {
+        font-size: 1.2rem;
+        opacity: 0.9;
     }
 
     /* Qaybta Filter-ka (Badhamada) */
@@ -24,37 +33,39 @@
         display: flex;
         justify-content: center;
         gap: 15px;
-        margin-bottom: 40px;
+        margin: -30px auto 40px auto; /* Wax yar kor ayay u kacaysaa */
         flex-wrap: wrap;
+        position: relative;
+        z-index: 10;
     }
 
     .filter-btn {
         text-decoration: none;
-        padding: 12px 28px;
+        padding: 14px 30px;
         border-radius: 50px;
-        font-weight: 500;
+        font-weight: 600;
         background: white;
         color: #2c3e50;
-        border: 1px solid #ddd;
+        border: none;
         transition: 0.3s;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     .filter-btn:hover, .filter-btn.active {
         background: #3498db;
         color: white;
-        border-color: #3498db;
-        transform: translateY(-3px);
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
     }
 
-    /* Property Grid (Guryaha Meesha ay ku jiraan) */
+    /* Property Grid */
     .property-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 30px;
         padding: 0 5%;
         max-width: 1300px;
-        margin: 0 auto 50px auto;
+        margin: 0 auto 60px auto;
     }
 
     /* Property Card Style */
@@ -62,47 +73,49 @@
         background: white;
         border-radius: 15px;
         overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
         transition: 0.4s;
-        border: 1px solid #eee;
+        border: 1px solid #f0f0f0;
     }
 
     .property-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
     }
 
     .property-thumb {
         width: 100%;
-        height: 220px;
+        height: 230px;
         object-fit: cover;
     }
 
     .property-content {
-        padding: 20px;
+        padding: 25px;
     }
 
     .property-cat {
-        background: #f1f8ff;
+        background: #ebf5ff;
         color: #3498db;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
+        padding: 5px 15px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
         text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .property-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         margin: 15px 0 10px 0;
         color: #2c3e50;
+        font-weight: 600;
     }
 
     .property-price {
         color: #27ae60;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 15px;
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 20px;
     }
 
     .view-btn {
@@ -110,10 +123,10 @@
         background: #2c3e50;
         color: white;
         text-align: center;
-        padding: 12px;
+        padding: 14px;
         text-decoration: none;
-        border-radius: 8px;
-        font-weight: 500;
+        border-radius: 10px;
+        font-weight: 600;
         transition: 0.3s;
     }
 
@@ -124,7 +137,7 @@
 
 <div class="hero-section">
     <h1>Raadi Gurigaaga Riyada</h1>
-    <p>Waxaan kuu haynaa guryo, dhul iyo naqshado tayo leh.</p>
+    <p>Waxaan kuu haynaa guryo, dhul iyo naqshado tayo leh oo la xaqiijiyay.</p>
 </div>
 
 <div class="filter-container">
@@ -136,20 +149,26 @@
 
 <div class="property-grid">
     <?php
-    $search = isset($_GET['search']) ? $_GET['search'] : '';
-    $cat = isset($_GET['cat']) ? $_GET['cat'] : '';
+    $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
+    $cat = isset($_GET['cat']) ? mysqli_real_escape_string($conn, $_GET['cat']) : '';
 
-    $sql = "SELECT * FROM properties WHERE (title LIKE '%$search%' OR description LIKE '%$search%')";
+    // SQL-ka oo hadda leh status = 'approved'
+    $sql = "SELECT * FROM properties WHERE status = 'approved'";
+    
+    if ($search != '') {
+        $sql .= " AND (title LIKE '%$search%' OR description LIKE '%$search%')";
+    }
+    
     if ($cat != '') {
         $sql .= " AND category = '$cat'";
     }
+    
     $sql .= " ORDER BY id DESC";
 
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            // Sawirka haddii uusan jirin, ku dar mid default ah
             $image = !empty($row['image_path']) ? $row['image_path'] : 'https://via.placeholder.com/400x300?text=No+Image';
             
             echo '<div class="property-card">';
@@ -162,7 +181,10 @@
             echo '</div></div>';
         }
     } else {
-        echo "<h3 style='grid-column: 1/-1; text-align: center; color: #7f8c8d;'>Waan ka xunnahay, wax xog ah lama helin.</h3>";
+        echo "<div style='grid-column: 1/-1; text-align: center; padding: 50px;'>
+                <img src='https://cdn-icons-png.flaticon.com/512/6134/6134065.png' width='100' style='opacity:0.2;'>
+                <h3 style='color: #7f8c8d; margin-top:20px;'>Waan ka xunnahay, hadda ma jiraan guryo la aqbalay oo qaybtan ku jira.</h3>
+              </div>";
     }
     ?>
 </div>

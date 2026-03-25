@@ -1,130 +1,144 @@
+<?php
+// Hubi in session-ku furanyahay si aan xogta qofka u helno
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="so">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keyd-Hanti Marketplace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <title>Keyd-Hanti | Real Estate Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: #f8f9fa;
-        }
-
-        /* Navbar Style */
-        .navbar {
-            background: #2c3e50;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        header {
+            background-color: #2c3e50;
             padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .logo h2 {
-            color: #ffffff;
-            font-weight: 600;
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 700;
             letter-spacing: 1px;
         }
 
-        /* Modern Search Bar Design */
-        .search-form {
-            display: flex;
-            background: white;
-            border-radius: 50px;
-            padding: 3px;
-            width: 40%;
-            min-width: 300px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .search-input {
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px 0 0 50px;
-            outline: none;
-            flex-grow: 1;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .search-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover {
-            background: #2980b9;
-            transform: scale(1.05);
-        }
-
-        /* Navigation Links */
         .nav-links {
+            list-style: none;
             display: flex;
+            align-items: center;
             gap: 25px;
         }
 
-        .nav-links a {
+        .nav-links li a {
             color: #ecf0f1;
             text-decoration: none;
-            font-weight: 400;
+            font-weight: 500;
             font-size: 15px;
-            transition: color 0.3s;
+            transition: 0.3s;
         }
 
-        .nav-links a:hover {
+        .nav-links li a:hover {
             color: #3498db;
         }
 
-        /* Active link highlight */
-        .nav-links a.active {
-            color: #3498db;
-            border-bottom: 2px solid #3498db;
+        /* Dashboard Link Special Style */
+        .admin-link {
+            background: #f1c40f;
+            color: #2c3e50 !important;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 700 !important;
         }
 
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 15px;
-                padding: 20px;
-            }
-            .search-form {
-                width: 100%;
-            }
+        .admin-link:hover {
+            background: #f39c12 !important;
         }
+
+        /* Logout Button */
+        .logout-btn {
+            color: #e74c3c !important;
+            border: 1px solid #e74c3c;
+            padding: 5px 12px;
+            border-radius: 5px;
+        }
+
+        .logout-btn:hover {
+            background: #e74c3c;
+            color: white !important;
+        }
+
+        .user-name {
+            color: #bdc3c7;
+            font-size: 13px;
+            margin-right: 5px;
+        }
+
+        /* Search Bar in Header */
+        .header-search {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 5px 15px;
+        }
+
+        .header-search input {
+            background: none;
+            border: none;
+            color: white;
+            padding: 5px;
+            outline: none;
+        }
+
+        .header-search input::placeholder { color: #bdc3c7; }
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <div class="logo">
-        <h2>Keyd-Hanti</h2>
-    </div>
+<header>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="index.php">Keyd-Hanti</a>
+        </div>
 
-    <form action="index.php" method="GET" class="search-form">
-        <input type="text" name="search" placeholder="Search for House or Location..." class="search-input">
-        <button type="submit" class="search-btn">Search</button>
-    </form>
+        <form action="index.php" method="GET" class="header-search">
+            <input type="text" name="search" placeholder="Raadi hanti...">
+        </form>
 
-    <div class="nav-links">
-        <a href="index.php">Home</a>
-        <a href="add_property.php">Add Property</a>
-        <a href="contact.php">Contact Us</a>
+        <ul class="nav-links">
+            <li><a href="index.php">Home</a></li>
+            <li><a href="add_property.php">Add Property</a></li>
+            <li><a href="contact.php">Contact Us</a></li>
+
+            <?php if(isset($_SESSION['user_id'])): ?>
+                
+                <?php if($_SESSION['role'] == 'admin'): ?>
+                    <li><a href="admin_dashboard.php" class="admin-link">Dashboard</a></li>
+                <?php endif; ?>
+
+                <li>
+                    <span class="user-name">Waa: <?php echo $_SESSION['username']; ?></span>
+                    <a href="logout.php" class="logout-btn">Logout</a>
+                </li>
+
+            <?php else: ?>
+                <li><a href="login.php">Login</a></li>
+                <li><a href="register.php" style="background: #3498db; padding: 8px 15px; border-radius: 5px;">Sign Up</a></li>
+            <?php endif; ?>
+        </ul>
     </div>
-</div>
+</header>
