@@ -15,7 +15,7 @@
     if(isset($_POST['register'])){
         $user = $_POST['username'];
         $email = $_POST['email'];
-        $pass = password_hash($_POST['password'], PASSWORD_DEFAULT); // Amniga Password-ka
+        $pass = password_hash($_POST['password'], PASSWORD_DEFAULT); 
         $role = $_POST['role'];
 
         $sql = "INSERT INTO users (username, email, password, role) VALUES ('$user', '$email', '$pass', '$role')";

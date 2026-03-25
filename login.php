@@ -15,7 +15,7 @@ if(isset($_POST['login'])){
             $_SESSION['role'] = $user['role'];
             $_SESSION['username'] = $user['username'];
             
-            header("Location: index.php"); // Markuu galo wuxuu u dirayaa Home-ka
+            header("Location: index.php"); 
         } else { echo "<p style='color:red;'>Password-ka waa qalad!</p>"; }
     } else { echo "<p style='color:red;'>Email-kan ma diiwaangashna!</p>"; }
 }

@@ -1,25 +1,25 @@
 <?php
-// 1. Amniga Session-ka: Hubi inaan session horay u furnayn
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 2. Error Reporting: Si aad u aragto haddii uu qalad jiro (meesha bogga caddaanka ah)
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 include 'db_connect.php';
 
-// 3. Hubi in qofka soo galay uu yahay Admin
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    // Haddii uusan qofku Admin ahayn, dib ugu celi login
+    
     header("Location: login.php");
     exit();
 }
 
 include 'header.php';
 
-// 4. Tirakoobka guud (Stats)
+
 $total_properties = $conn->query("SELECT COUNT(*) as total FROM properties")->fetch_assoc()['total'];
 $total_users = $conn->query("SELECT COUNT(*) as total FROM users")->fetch_assoc()['total'];
 $pending_approvals = $conn->query("SELECT COUNT(*) as total FROM properties WHERE status = 'pending'")->fetch_assoc()['total'];
@@ -100,7 +100,7 @@ $pending_approvals = $conn->query("SELECT COUNT(*) as total FROM properties WHER
                         echo "<td><span class='status-badge $status_class'>".ucfirst($row['status'])."</span></td>";
                         echo "<td>";
                         
-                        // Badhanka Approve oo kaliya soo baxaya haddii gurigu pending yahay
+                        
                         if ($row['status'] == 'pending') {
                             echo "<a href='approve_property.php?id=".$row['id']."' class='btn btn-approve'>Approve</a>";
                         }

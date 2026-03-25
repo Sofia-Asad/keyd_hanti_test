@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-?>
+
 <!DOCTYPE html>
 <html lang="so">
 <head>
@@ -56,7 +56,7 @@ if (session_status() === PHP_SESSION_NONE) {
             color: #3498db;
         }
 
-        /* Dashboard Link Special Style */
+       
         .admin-link {
             background: #f1c40f;
             color: #2c3e50 !important;
@@ -69,7 +69,7 @@ if (session_status() === PHP_SESSION_NONE) {
             background: #f39c12 !important;
         }
 
-        /* Logout Button */
+      
         .logout-btn {
             color: #e74c3c !important;
             border: 1px solid #e74c3c;
@@ -88,7 +88,7 @@ if (session_status() === PHP_SESSION_NONE) {
             margin-right: 5px;
         }
 
-        /* Search Bar in Header */
+       
         .header-search {
             display: flex;
             background: rgba(255,255,255,0.1);
@@ -131,7 +131,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php endif; ?>
 
                 <li>
-                    <span class="user-name">Waa: <?php echo $_SESSION['username']; ?></span>
+                    <span class="user-name"><?php echo $_SESSION['username']; ?></span>
                     <a href="logout.php" class="logout-btn">Logout</a>
                 </li>
 

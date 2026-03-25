@@ -1,6 +1,6 @@
 <?php include 'db_connect.php'; include 'header.php'; ?>
 <?php
-// Haddii uusan qofku soo gelin ama uusan ahayn Admin/Seller, dib u celi
+
 if(!isset($_SESSION['user_id']) || ($_SESSION['role'] != 'admin' && $_SESSION['role'] != 'seller')){
     header("Location: login.php");
     exit();
@@ -37,12 +37,12 @@ if(!isset($_SESSION['user_id']) || ($_SESSION['role'] != 'admin' && $_SESSION['r
         $price = $_POST['price'];
         $desc = $_POST['description'];
 
-        // Uploading Image
+        
         $imgName = $_FILES['image']['name'];
         $imgTemp = $_FILES['image']['tmp_name'];
         move_uploaded_file($imgTemp, "uploads/".$imgName);
 
-        // Uploading Plan File (hadii uu jiro)
+        
         $planName = $_FILES['plan_file']['name'];
         $planTemp = $_FILES['plan_file']['tmp_name'];
         if(!empty($planName)) {

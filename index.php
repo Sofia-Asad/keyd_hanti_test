@@ -4,7 +4,7 @@ include 'header.php';
 ?>
 
 <style>
-    /* Qaybta Hero-ga (Korka) */
+    
     .hero-section {
         background: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.7)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
         background-size: cover;
@@ -27,12 +27,12 @@ include 'header.php';
         opacity: 0.9;
     }
 
-    /* Qaybta Filter-ka (Badhamada) */
+    
     .filter-container {
         display: flex;
         justify-content: center;
         gap: 15px;
-        margin: -30px auto 40px auto; /* Wax yar kor ayay u kacaysaa */
+        margin: -30px auto 40px auto; 
         flex-wrap: wrap;
         position: relative;
         z-index: 10;
@@ -57,7 +57,7 @@ include 'header.php';
         box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
     }
 
-    /* Property Grid */
+   
     .property-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -67,7 +67,7 @@ include 'header.php';
         margin: 0 auto 60px auto;
     }
 
-    /* Property Card Style */
+
     .property-card {
         background: white;
         border-radius: 15px;
@@ -151,7 +151,7 @@ include 'header.php';
     $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
     $cat = isset($_GET['cat']) ? mysqli_real_escape_string($conn, $_GET['cat']) : '';
 
-    // SQL-ka oo hadda leh status = 'approved'
+   
     $sql = "SELECT * FROM properties WHERE status = 'approved'";
     
     if ($search != '') {
